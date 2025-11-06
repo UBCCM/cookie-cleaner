@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en-ca">
+<!--
+ * Cookie Cleaner
+ * Copyright 2025 The University of British Columbia
+ * UBC Communications
+ * https://brand.ubc.ca/clf
+ */
+-->
+<head>
+<meta charset="utf-8">
+<title>UBC.ca cookie cleaner - The University of British Columbia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="UBC.ca Cookie Cleaner">
+<link rel="preconnect" href="https://cdn.ubc.ca" crossorigin>
+<link rel="preload" href="https://cdn.ubc.ca/ubc/ubc-brand/latest/js/ubc-digital-brand.js" as="script" crossorigin="anonymous">
+<meta name="author" content="">
+<!-- Stylesheets -->
+<style type="text/css">
+/* Minimal Reset (Alternative to normalize.css) */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+/** Unit Bar background colour **/
+ubc-header {
+    --ubc-unit-background-color: #002145;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+main {
+    max-width: 1200px;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    margin: 0.5em 0;
+}
+
+</style>
+<script type="module" src="https://cdn.ubc.ca/ubc/ubc-brand/latest/js/ubc-digital-brand.js" crossorigin="anonymous" defer></script>
+</head>
+<body>
+    <ubc-header
+        website-name="UBC.ca cookie cleaner"
+    ></ubc-header>
+    <!-- Content Area -->
+    <main>
+        <h1>UBC.ca cookies cleaner</h1>
+        <button onclick="deleteAllCookies()">Delete All UBC Cookies</button>
+        <ul id="cookieList"></ul>
+
+        <script>
+        function getCookieExplanation(name) {
+            if (name.startsWith('_ga')) return 'Google Analytics – tracks visitors, repeat vs new.';
+            if (name.startsWith('_gid')) return 'Google Analytics – short-term visitor tracking.';
+            if (name.startsWith('_fbp')) return 'Facebook Pixel – ad and campaign tracking.';
+            if (name.startsWith('_gcl')) return 'Google Ads – conversion tracking.';
+            if (name.startsWith('_tt') || name.startsWith('ttcsid')) return 'TikTok Pixel – ad/visitor tracking.';
+            if (name.startsWith('_hj')) return 'Hotjar – session recording / heatmaps.';
+            if (name.startsWith('__utm')) return 'Old Google Analytics cookie.';
+            if (name.startsWith('_clck')) return 'Microsoft Clarity – session tracking.';
+            if (name.startsWith('_scid')) return 'Snapchat Pixel tracking.';
+            if (name.startsWith('_ce')) return 'Crazy Egg – visitor interaction tracking.';
+            return 'Other cookie (likely tracking or session related).';
+        }
+
+        function listCookies() {
+            const list = document.getElementById('cookieList');
+            list.innerHTML = '';
+
+            const rawCookies = document.cookie;
+            if (!rawCookies) {
+            list.innerHTML = '<li>There is no cookie 🍪 left.</li>';
+            return;
+            }
+
+            const cookies = rawCookies.split(';').map(c => c.trim());
+            let found = false;
+
+            cookies.forEach(cookie => {
+            let [name] = cookie.split('=');
+            name = name.trim();
+            if (document.domain.endsWith('ubc.ca')) {
+                found = true;
+                const li = document.createElement('li');
+
+                const btn = document.createElement('button');
+                btn.textContent = 'Delete';
+                btn.onclick = () => deleteCookie(name);
+                li.appendChild(btn);
+
+                const text = document.createTextNode(' ' + name);
+                li.appendChild(text);
+
+                const span = document.createElement('span');
+                span.className = 'explain';
+                span.textContent = ' (' + getCookieExplanation(name) + ')';
+                li.appendChild(span);
+
+                list.appendChild(li);
+            }
+            });
+
+            if (!found) {
+            list.innerHTML = '<li>There is no cookie 🍪 left.</li>';
+            }
+        }
+
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.ubc.ca`;
+            listCookies();
+        }
+
+        function deleteAllCookies() {
+            const cookies = document.cookie.split(';');
+            cookies.forEach(cookie => {
+            let [name] = cookie.split('=');
+            name = name.trim();
+            deleteCookie(name);
+            });
+        }
+
+        // Run immediately
+        listCookies();
+        </script>
+
+    </main>
+    <!-- End of Content Area -->
+    <ubc-footer></ubc-footer>
+</body>
+</html>
