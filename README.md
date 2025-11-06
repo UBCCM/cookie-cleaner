@@ -39,7 +39,7 @@ You can use the cookie cleaner in one of two ways, depending on your site setup.
 
 ### Option 1 — Upload and Run as a Webpage
 
-1. Download the provided `ubc-cookie-cleaner.html` file.
+1. Download the provided [`cleaner.html`](https://github.com/UBCCM/cookie-cleaner/blob/main/src/cleaner.html) file.
 2. Upload it to any website that has a `*.ubc.ca` domain (for example, `brand.ubc.ca` or `events.ubc.ca`).
 3. Visit the page in your browser (e.g., `https://brand.ubc.ca/ubc-cookie-cleaner.html`).
 4. Click **“Delete All UBC Cookies”** or remove specific cookies individually.
@@ -49,7 +49,7 @@ You can use the cookie cleaner in one of two ways, depending on your site setup.
 
 If you prefer not to host a separate page:
 
-1. Copy the JavaScript from the `<script>` section in the file.
+1. Copy the JavaScript from the `<script>` section in [`cleaner.html`](https://github.com/UBCCM/cookie-cleaner/blob/main/src/cleaner.html).
 2. Add it to a temporary utility page or admin-only area within your UBC-hosted site (`*.ubc.ca`).
 3. Ensure it runs in a browser context under a UBC domain so it can access the relevant cookies.
 
