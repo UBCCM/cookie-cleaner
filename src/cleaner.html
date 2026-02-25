@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-ca">
 <!--
@@ -21,8 +20,6 @@
 /* Minimal Reset (Alternative to normalize.css) */
 *, *::before, *::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 /** Unit Bar background colour **/
 ubc-header {
@@ -45,76 +42,207 @@ ul {
 li {
     margin: 0.5em 0;
 }
+.skip-link {
+    position:absolute;
+    top:-50px;
+    left:0;
+    background:#FFF;
+    color:#002145;
+    border: 2px solid #002145;
+    padding:8px;
+    z-index:100;
+    transition:top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+}
 
 </style>
 <script type="module" src="https://cdn.ubc.ca/ubc/ubc-brand/latest/js/ubc-digital-brand.js" crossorigin="anonymous" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
     <ubc-header
         website-name="UBC.ca cookie cleaner"
-    ></ubc-header>
+    >
+        <template shadowrootmode="closed">
+            <style>
+            :host {--logo-h:98px;--unit-h:50px}
+            @media (min-width:1200px){:host{--logo-h:118px;--unit-h:60px}}
+            ubc-logo-bar {height:var(--logo-h)}
+            ubc-unit-bar {height:var(--unit-h)}
+            </style>
+            <link rel="stylesheet" href="https://cdn.ubc.ca/ubc/ubc-brand/latest/css/critical.css" crossorigin="anonymous">
+            <ubc-logo-bar>
+                <a href="//www.ubc.ca" aria-label="UBC Home">
+                    <noscript><div class="ubc-logo"></div></noscript>
+                </a>
+            </ubc-logo-bar>
+            <ubc-unit-bar>
+                <nav aria-label="Site home">
+                    <a href="/" class="ubc-unit-link">
+                    <span class="ubc-unit-identifier">UBC.ca cookie cleaner</span>
+                    </a>
+                </nav>
+            </ubc-unit-bar>
+        </template>
+    </ubc-header>
     <!-- Content Area -->
-    <main>
-        <h1>UBC.ca cookies cleaner</h1>
-        <button onclick="deleteAllCookies()">Delete All UBC Cookies</button>
-        <ul id="cookieList"></ul>
+    <main id="mainContent">
+        <h1 class="text-3xl font-bold mb-6">UBC.ca cookies cleaner</h1>
+        <button class="btn btn-error btn-soft px-2 py-1" onclick="deleteAllCookies()">Delete All UBC.ca Cookies</button>
+        <div class="overflow-x-auto mt-6">
+            <table class="table table-zebra" id="cookieTable">
+                <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Cookie</th>
+                    <th>Vendor</th>
+                    <th>Purpose</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </div>
 
         <script>
-        function getCookieExplanation(name) {
-            if (name.startsWith('_ga')) return 'Google Analytics – tracks visitors, repeat vs new.';
-            if (name.startsWith('_gid')) return 'Google Analytics – short-term visitor tracking.';
-            if (name.startsWith('_fbp')) return 'Facebook Pixel – ad and campaign tracking.';
-            if (name.startsWith('_gcl')) return 'Google Ads – conversion tracking.';
-            if (name.startsWith('_tt') || name.startsWith('ttcsid')) return 'TikTok Pixel – ad/visitor tracking.';
-            if (name.startsWith('_hj')) return 'Hotjar – session recording / heatmaps.';
-            if (name.startsWith('__utm')) return 'Old Google Analytics cookie.';
-            if (name.startsWith('_clck')) return 'Microsoft Clarity – session tracking.';
-            if (name.startsWith('_scid')) return 'Snapchat Pixel tracking.';
-            if (name.startsWith('_ce')) return 'Crazy Egg – visitor interaction tracking.';
-            return 'Other cookie (likely tracking or session related).';
+
+        function getCookieMeta(name) {
+            if (name.startsWith('_ga')) {
+                return {
+                vendor: 'Google Analytics',
+                purpose: 'Tracks visitors and repeat visits',
+                };
+            }
+
+            if (name.startsWith('_gid')) {
+                return {
+                vendor: 'Google Analytics',
+                purpose: 'Short-term visitor tracking',
+                };
+            }
+
+            if (name.startsWith('_fbp')) {
+                return {
+                vendor: 'Facebook Pixel',
+                purpose: 'Ad and campaign tracking',
+                };
+            }
+
+            if (name.startsWith('_gcl') || name.startsWith('__gsas')) {
+                return {
+                vendor: 'Google Ads',
+                purpose: 'Conversion tracking',
+                };
+            }
+
+            if (name.startsWith('_hj')) {
+                return {
+                vendor: 'Hotjar',
+                purpose: 'Session recording / heatmaps',
+                };
+            }
+
+            if (name.startsWith('_tt') || name.startsWith('ttcsid')) {
+                return {
+                    vendor: 'TikTok Pixel',
+                    purpose: 'Ad/visitor tracking',
+                };
+            }
+
+            if (name.startsWith('__utm')) {
+                return {
+                    vendor: 'Google Analytics',
+                    purpose: 'GA cookie (old version)',
+                };
+            }
+
+            if (name.startsWith('_clck')) {
+                return {
+                    vendor: 'Microsoft Clarity',
+                    purpose: 'Session tracking',
+                };
+            }
+            if (name.startsWith('_sc') || name.startsWith('_Sc')) {
+                return {
+                    vendor:  'Snapchat Pixel',
+                    purpose: 'Ad/visitor tracking',
+                };
+            }
+            if (name.startsWith('_rdt_uuid') ) {
+                return {
+                    vendor: 'Reddit Pixel',
+                    purpose: 'Ad/visitor tracking',
+                }
+            }
+            
+            if (name.startsWith('_ce') || name.startsWith('cebs')) {
+                return {
+                    vendor: 'Crazy Egg',
+                    purpose: 'Visitor interaction tracking',
+                };
+            }
+
+            return {
+                vendor: 'Unknown',
+                purpose: 'Likely session or tracking related',
+            };
         }
 
         function listCookies() {
-            const list = document.getElementById('cookieList');
-            list.innerHTML = '';
+            const tbody = document.querySelector('#cookieTable tbody');
+            tbody.innerHTML = '';
 
             const rawCookies = document.cookie;
+
             if (!rawCookies) {
-            list.innerHTML = '<li>There is no cookie 🍪 left.</li>';
-            return;
+                tbody.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        <div class="alert alert-success alert-soft">
+                            🍪 No cookies found.
+                        </div>
+                    </td>
+                </tr>
+                `;
+                return;
             }
 
             const cookies = rawCookies.split(';').map(c => c.trim());
-            let found = false;
 
             cookies.forEach(cookie => {
-            let [name] = cookie.split('=');
-            name = name.trim();
-            if (document.domain.endsWith('ubc.ca')) {
-                found = true;
-                const li = document.createElement('li');
+                let [name] = cookie.split('=');
+                name = name.trim();
 
-                const btn = document.createElement('button');
-                btn.textContent = 'Delete';
-                btn.onclick = () => deleteCookie(name);
-                li.appendChild(btn);
+                const meta = getCookieMeta(name);
 
-                const text = document.createTextNode(' ' + name);
-                li.appendChild(text);
+                const tr = document.createElement('tr');
 
-                const span = document.createElement('span');
-                span.className = 'explain';
-                span.textContent = ' (' + getCookieExplanation(name) + ')';
-                li.appendChild(span);
+                tr.innerHTML = `
+                <td class="py-2">
+                    <button class="btn btn-error btn-xs btn-soft" data-name="${name}">
+                    Delete
+                    </button>
+                </td>
+                <td class="font-mono text-xs">${name}</td>
+                <td class="text-sm">${meta.vendor}</td>
+                <td class="text-sm">${meta.purpose}</td>
+                
+                `;
 
-                list.appendChild(li);
-            }
+                tbody.appendChild(tr);
             });
 
-            if (!found) {
-            list.innerHTML = '<li>There is no cookie 🍪 left.</li>';
-            }
+            tbody.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', e => {
+                deleteCookie(e.target.dataset.name);
+                });
+            });
         }
+
+
 
         function deleteCookie(name) {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.ubc.ca`;
