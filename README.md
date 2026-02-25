@@ -8,6 +8,33 @@ This tool provides an easy, temporary way to **remove UBC-related cookies** unti
 
 ---
 
+## 🛑 CRITICAL: Prevention (Action Required for Site Owners)
+
+To prevent your site from crashing other UBC websites, you must ensure your tracking cookies are **scoped only to your subdomain**. Following these steps stops the accumulation of headers at the root level.
+
+### 1. Google Tag Manager (GTM) Setup
+If you use GTM to deploy GA4, you must override the default "auto" cookie domain:
+1. Open your **GA4 Configuration Tag**.
+2. Under **Fields to Set**, add a new row:
+   - **Field Name:** `cookie_domain`
+   - **Value:** Your specific subdomain (e.g., `science.ubc.ca`) 
+3. **Do not** leave this blank or set to `auto`.
+
+### 2. Google Analytics 4 (gtag.js) Setup
+If you hardcode your tracking script, update your configuration line:
+```javascript
+// ✅ CORRECT: Scoped to your specific site
+gtag('config', 'G-XXXXXXXXXX', {
+  'cookie_domain': 'your-subdomain.ubc.ca'
+});
+
+// ❌ INCORRECT: Causes "Cookie Bloat" across ubc.ca
+gtag('config', 'G-XXXXXXXXXX'); 
+```
+👉 **Official Documentation:** [https://developers.google.com/tag-platform/security/guides/customize-cookies](https://developers.google.com/tag-platform/security/guides/customize-cookies)
+
+---
+
 ## 🌟 Purpose
 
 When tracking cookies (e.g., Google Analytics, Meta Pixel, TikTok Pixel, Hotjar, or Clarity) are set at the root `ubc.ca` domain rather than at their specific subdomain, they are shared across multiple UBC sites. This leads to:
@@ -60,19 +87,6 @@ You should see:
 ```
 There is no cookie 🍪 left.
 ```
-
----
-
-## 🧠 Best Practice for Future Setup
-
-To prevent similar issues in the future:
-
-* **Always configure analytics tools for their specific subdomain**, not for the entire `ubc.ca` domain.
-
-  * ✅ Example: `brand.ubc.ca`, `science.ubc.ca`, `events.ubc.ca`
-  * ❌ Avoid: setting cookies at `ubc.ca`
-
-This keeps data scoped appropriately, improves site performance, and avoids cross-domain cookie conflicts.
 
 ---
 
