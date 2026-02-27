@@ -92,7 +92,7 @@ li {
     <!-- Content Area -->
     <main id="mainContent">
         <h1 class="text-3xl font-bold mb-6">UBC.ca cookies cleaner</h1>
-        <button class="btn btn-error btn-soft px-2 py-1" onclick="deleteAllCookies()">Delete All UBC.ca Cookies</button>
+        <button class="btn btn-outline px-2 py-1" onclick="deleteAllCookies()">Delete All UBC.ca Cookies</button>
         <div class="overflow-x-auto mt-6">
             <table class="table table-zebra" id="cookieTable">
                 <thead>
@@ -222,7 +222,7 @@ li {
 
                 tr.innerHTML = `
                 <td class="py-2">
-                    <button class="btn btn-error btn-xs btn-soft" data-name="${name}">
+                    <button class="btn btn-outline btn-xs" data-name="${name}">
                     Delete
                     </button>
                 </td>
