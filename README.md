@@ -2,7 +2,7 @@
 
 The **UBC.ca Cookie Cleaner** is a lightweight web utility designed to help restore normal access to UBC websites affected by oversized or conflicting cookies. Some analytics and tracking tools across UBC subdomains have been configured inconsistently, occasionally causing browsers to return **“Request Header Fields Too Large.”**
 
-👉 **Try it here:** [https://clf.ubc.ca/theme-options/ubc-cookie-cleaner.html](https://clf.ubc.ca/theme-options/ubc-cookie-cleaner.html)
+👉 **Try it here:** [https://clf.ubc.ca/cookie-cleaner.html](https://clf.ubc.ca/cookie-cleaner.html)
 
 This tool provides an easy, temporary way to **remove UBC-related cookies** until a unified governance model for analytics and cookie management is in place.
 
@@ -70,7 +70,7 @@ You can use the cookie cleaner in one of two ways, depending on your site setup.
 
 1. Download the provided [`cleaner.html`](https://github.com/UBCCM/cookie-cleaner/blob/main/src/cleaner.html) file.
 2. Upload it to any website that has a `*.ubc.ca` domain (for example, `brand.ubc.ca` or `events.ubc.ca`).
-3. Visit the page in your browser (e.g., `https://brand.ubc.ca/ubc-cookie-cleaner.html`).
+3. Visit the page in your browser (e.g., `https://brand.ubc.ca/cleaner.html`).
 4. Click **“Delete All UBC Cookies”** or remove specific cookies individually.
 5. Refresh the affected UBC site to confirm the issue is resolved.
 
