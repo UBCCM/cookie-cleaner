@@ -109,85 +109,82 @@ li {
 
         <script>
 
-        function getCookieMeta(name) {
-            if (name.startsWith('_ga')) {
-                return {
+        const COOKIE_PATTERNS = [
+            {
+                patterns: ['_ga'],
                 vendor: 'Google Analytics',
-                purpose: 'Tracks visitors and repeat visits',
-                };
-            }
-
-            if (name.startsWith('_gid')) {
-                return {
+                purpose: 'Tracks visitors and repeat visits'
+            },
+            {
+                patterns: ['_gid'],
                 vendor: 'Google Analytics',
-                purpose: 'Short-term visitor tracking',
-                };
-            }
-
-            if (name.startsWith('_fbp')) {
-                return {
-                vendor: 'Facebook Pixel',
-                purpose: 'Ad and campaign tracking',
-                };
-            }
-
-            if (name.startsWith('_gcl') || name.startsWith('__gsas')) {
-                return {
+                purpose: 'Short-term visitor tracking'
+            },
+            {
+                patterns: ['__utm'],
+                vendor: 'Google Analytics',
+                purpose: 'GA cookie (old version)'
+            },
+            {
+                patterns: ['_gcl', '__gsas'],
                 vendor: 'Google Ads',
-                purpose: 'Conversion tracking',
-                };
-            }
-
-            if (name.startsWith('_hj')) {
-                return {
+                purpose: 'Conversion tracking'
+            },
+            {
+                patterns: ['_fbp'],
+                vendor: 'Facebook Pixel',
+                purpose: 'Ad and campaign tracking'
+            },
+            {
+                patterns: ['_twpid'],
+                vendor: 'Twitter (X) Pixel',
+                purpose: 'Ad and campaign tracking'
+            },
+            {
+                patterns: ['_hj'],
                 vendor: 'Hotjar',
-                purpose: 'Session recording / heatmaps',
-                };
+                purpose: 'Session recording / heatmaps'
+            },
+            {
+                patterns: ['_tt', 'ttcsid'],
+                vendor: 'TikTok Pixel',
+                purpose: 'Ad/visitor tracking'
+            },
+            {
+                patterns: ['_clck'],
+                vendor: 'Microsoft Clarity',
+                purpose: 'Session tracking'
+            },
+            {
+                patterns: ['_sc', '_Sc'],
+                vendor: 'Snapchat Pixel',
+                purpose: 'Ad/visitor tracking'
+            },
+            {
+                patterns: ['_rdt_uuid'],
+                vendor: 'Reddit Pixel',
+                purpose: 'Ad/visitor tracking'
+            },
+            {
+                patterns: ['_ce', 'cebs'],
+                vendor: 'Crazy Egg',
+                purpose: 'Visitor interaction tracking'
             }
+        ];
 
-            if (name.startsWith('_tt') || name.startsWith('ttcsid')) {
-                return {
-                    vendor: 'TikTok Pixel',
-                    purpose: 'Ad/visitor tracking',
-                };
-            }
-
-            if (name.startsWith('__utm')) {
-                return {
-                    vendor: 'Google Analytics',
-                    purpose: 'GA cookie (old version)',
-                };
-            }
-
-            if (name.startsWith('_clck')) {
-                return {
-                    vendor: 'Microsoft Clarity',
-                    purpose: 'Session tracking',
-                };
-            }
-            if (name.startsWith('_sc') || name.startsWith('_Sc')) {
-                return {
-                    vendor:  'Snapchat Pixel',
-                    purpose: 'Ad/visitor tracking',
-                };
-            }
-            if (name.startsWith('_rdt_uuid') ) {
-                return {
-                    vendor: 'Reddit Pixel',
-                    purpose: 'Ad/visitor tracking',
+        function getCookieMeta(name) {
+            for (const entry of COOKIE_PATTERNS) {
+                if (entry.patterns.some(p => name.startsWith(p))) {
+                    return {
+                        vendor: entry.vendor,
+                        purpose: entry.purpose
+                    };
                 }
-            }
-            
-            if (name.startsWith('_ce') || name.startsWith('cebs')) {
-                return {
-                    vendor: 'Crazy Egg',
-                    purpose: 'Visitor interaction tracking',
-                };
             }
 
             return {
                 vendor: 'Unknown',
-                purpose: 'Likely session or tracking related',
+                purpose: 'Likely session or tracking related'
             };
         }
 
@@ -195,9 +192,7 @@ li {
             const tbody = document.querySelector('#cookieTable tbody');
             tbody.innerHTML = '';
 
-            const rawCookies = document.cookie;
-
-            if (!rawCookies) {
+            if (!document.cookie) {
                 tbody.innerHTML = `
                 <tr>
                     <td colspan="4">
@@ -205,17 +200,14 @@ li {
                             🍪 No cookies found.
                         </div>
                     </td>
-                </tr>
-                `;
+                </tr>`;
                 return;
             }
 
-            const cookies = rawCookies.split(';').map(c => c.trim());
+            const cookies = document.cookie.split(';').map(c => c.trim());
 
             cookies.forEach(cookie => {
-                let [name] = cookie.split('=');
-                name = name.trim();
-
+                const name = cookie.split('=')[0].trim();
                 const meta = getCookieMeta(name);
 
                 const tr = document.createElement('tr');
@@ -223,13 +215,12 @@ li {
                 tr.innerHTML = `
                 <td class="py-2">
                     <button class="btn btn-outline btn-xs" data-name="${name}">
-                    Delete
+                        Delete
                     </button>
                 </td>
                 <td class="font-mono text-xs">${name}</td>
                 <td class="text-sm">${meta.vendor}</td>
                 <td class="text-sm">${meta.purpose}</td>
-                
                 `;
 
                 tbody.appendChild(tr);
@@ -237,12 +228,10 @@ li {
 
             tbody.querySelectorAll('button').forEach(btn => {
                 btn.addEventListener('click', e => {
-                deleteCookie(e.target.dataset.name);
+                    deleteCookie(e.target.dataset.name);
                 });
             });
         }
-
-
 
         function deleteCookie(name) {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.ubc.ca`;
@@ -250,11 +239,9 @@ li {
         }
 
         function deleteAllCookies() {
-            const cookies = document.cookie.split(';');
-            cookies.forEach(cookie => {
-            let [name] = cookie.split('=');
-            name = name.trim();
-            deleteCookie(name);
+            document.cookie.split(';').forEach(cookie => {
+                const name = cookie.split('=')[0].trim();
+                deleteCookie(name);
             });
         }
 
