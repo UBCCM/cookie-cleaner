@@ -90,6 +90,31 @@ There is no cookie 🍪 left.
 
 ---
 
+## 🚨 If You Are Already Seeing a 431 “Request Header Fields Too Large” Error
+
+In some cases, the cookie cleaner page may not load because the browser is already sending too many cookies with the request header. When this happens, you can try using a minimal cookie reset script that removes UBC-related cookies before loading the full tool.
+
+You can access the reset script in two ways:
+- [Sample on clf.ubc.ca](https://clf.ubc.ca/cookie-reset.html)
+- [Source code in `reset.html`](https://github.com/UBCCM/cookie-cleaner/blob/main/src/reset.html)
+
+The reset script attempts to remove cookies associated with:
+
+`.ubc.ca`
+
+After running the reset script:
+
+1. Try accessing the affected UBC site again.
+2. If the site loads successfully, you can then use the **UBC Cookie Cleaner** to review or remove any remaining cookies.
+
+### Last Resort
+
+If the error persists and the reset script cannot run, you may need to **manually clear cookies for `ubc.ca` in your browser settings**.
+
+This should only be necessary in rare cases where the browser refuses requests before any page content or scripts can load.
+
+---
+
 **Author:** UBC Communications
 **Copyright:** © 2025 The University of British Columbia
 **More Info:** [https://brand.ubc.ca/clf](https://brand.ubc.ca/clf)
