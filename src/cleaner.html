@@ -25,45 +25,13 @@
 ubc-header {
     --ubc-unit-background-color: #002145;
 }
-
-body {
-    font-family: Arial, sans-serif;
-}
-main {
-    max-width: 1200px;
-    padding: 1rem;
-    margin: 0 auto;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-li {
-    margin: 0.5em 0;
-}
-.skip-link {
-    position:absolute;
-    top:-50px;
-    left:0;
-    background:#FFF;
-    color:#002145;
-    border: 2px solid #002145;
-    padding:8px;
-    z-index:100;
-    transition:top 0.2s;
-}
-.skip-link:focus {
-    top: 0;
-}
-
 </style>
 <script type="module" src="https://cdn.ubc.ca/ubc/ubc-brand/latest/js/ubc-digital-brand.js" crossorigin="anonymous" defer></script>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-    <a href="#mainContent" class="skip-link">Skip to main content</a>
+<body class="font-[Arial]">
+    <a href="#mainContent" class="absolute top-[-50px] left-0 bg-white color-[#002145] border-2 border-solid border-[#0002145] p-2 z-100 transition-[top] duration-200 focus:top-0">Skip to main content</a>
     <ubc-header
         website-name="UBC.ca cookie cleaner"
     >
@@ -90,7 +58,7 @@ li {
         </template>
     </ubc-header>
     <!-- Content Area -->
-    <main id="mainContent">
+    <main id="mainContent" class="max-w-300 p-4 mx-auto my-0">
         <h1 class="text-3xl font-bold mb-6">UBC.ca cookies cleaner</h1>
         <button class="btn btn-outline px-2 py-1" onclick="deleteAllCookies()">Delete All UBC.ca Cookies</button>
         <div class="overflow-x-auto mt-6">
