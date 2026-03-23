@@ -17,7 +17,7 @@ If you use GTM to deploy GA4, you must override the default "auto" cookie domain
 1. Open your **GA4 Configuration Tag**.
 2. Under **Fields to Set**, add a new row:
    - **Field Name:** `cookie_domain`
-   - **Value:** Your specific subdomain (e.g., `science.ubc.ca`) 
+   - **Value:** Your specific subdomain (e.g., `your-subdomain.ubc.ca`) 
 3. **Do not** leave this blank or set to `auto`.
 
 ### 2. Google Analytics 4 (gtag.js) Setup
@@ -69,8 +69,8 @@ You can use the cookie cleaner in one of two ways, depending on your site setup.
 ### Option 1 — Upload and Run as a Webpage
 
 1. Download the provided [`cleaner.html`](https://github.com/UBCCM/cookie-cleaner/blob/main/src/cleaner.html) file.
-2. Upload it to any website that has a `*.ubc.ca` domain (for example, `brand.ubc.ca` or `events.ubc.ca`).
-3. Visit the page in your browser (e.g., `https://brand.ubc.ca/cleaner.html`).
+2. Upload it to any website that has a `*.ubc.ca` domain (for example, `your-subdomain.ubc.ca`).
+3. Visit the page in your browser.
 4. Click **“Delete All UBC Cookies”** or remove specific cookies individually.
 5. Refresh the affected UBC site to confirm the issue is resolved.
 
